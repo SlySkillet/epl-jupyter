@@ -19,7 +19,7 @@ class WebScraper:
         chrome_options.add_argument("--headless")  # Run in headless mode
         chrome_options.add_argument("--disable-gpu")  # Disable GPU (optional, improves performance on some systems)
         chrome_options.add_argument("--no-sandbox")  # Bypass OS security model (useful on servers)
-        
+
         self.driver = webdriver.Chrome(options=chrome_options)
 
     def load_page(self):
@@ -33,11 +33,63 @@ class WebScraper:
         Make a selection from the table by clicking an element
         """
         try:
-            print("scraper is locating element...")
+            print("scraper is locating element... check")
             element = WebDriverWait(self.driver, timeout).until(
                 EC.presence_of_element_located((By.ID, element_id))
             )
             print("element located: ", element)
             print("element html: ", element.get_attribute('outerHTML'))
+
+            # click element
+            self.driver.execute_script("arguments[0].click();", element)
+            print("clicked the button")
         except Exception as e:
             print(f"error clicking element {element_id}: {e}")
+            self.driver.quit()
+            exit()
+
+        # NOTE: CHECK IF THE FOLLOWING BLOCK IS NECESSARY
+        try:
+            print("checking table update...")
+            WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_element_located((By.ID, "league-chemp")) # id of the table div
+            )
+            print("confirmed table updated successfully")
+        except Exception as e:
+            print(f"error waiting for table update: {e}")
+            self.driver.quit()
+            exit()
+
+    def scrape_table(self, table_id="league-chemp"):
+        try:
+            html = self.driver.page_source
+            soup = BeautifulSoup(html, "html.parser")
+            div = soup.find("div", {
+                "id": table_id
+            })
+            if div:
+                table = div.find("table")
+                if table:
+                    print("found table")
+                    rows = table.find_all("tr")
+                    data = []
+                    for row in rows:
+                        cells = row.find_all("td")
+                        if len(cells) == 0:
+                            cells = row.find_all("th")
+                        data.append([cell.get_text(strip=True) for cell in cells])
+                    if data:
+                        df = pd.DataFrame(data[1:], columns=data[0])
+                        return df
+                    else:
+                        print("no data")
+                else:
+                    print("table not found")
+            else:
+                print("div not found")
+        except Exception as e:
+            print(f"Error scraping table: {e}")
+    def close(self):
+        print("closing driver...")
+        self.driver.quit()
+        print("driver closed")
