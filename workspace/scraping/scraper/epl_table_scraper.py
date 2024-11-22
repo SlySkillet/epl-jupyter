@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 class WebScraper:
-    def __init__(self, url):
+    def __init__(self, url="https://understat.com/league/EPL"):
         """
         Initialize the WebScraper with url
         """
@@ -17,8 +17,6 @@ class WebScraper:
         # default to headless chrome options
         chrome_options = Options()
         chrome_options.add_argument("--headless")  # Run in headless mode
-        chrome_options.add_argument("--disable-gpu")  # Disable GPU (optional, improves performance on some systems)
-        chrome_options.add_argument("--no-sandbox")  # Bypass OS security model (useful on servers)
 
         self.driver = webdriver.Chrome(options=chrome_options)
 
