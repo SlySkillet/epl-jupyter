@@ -121,5 +121,27 @@ class UnderstatScraperOrchestrator:
         if side not in valid_sides:
             raise ValueError(f"Invalid value for 'side'. Expected one of {valid_sides}, received '{side}'")
         print(f"Retrieving raw data from Understat.com EPL {side} table")
+
+        id_directory = {
+            'home': 'home-away2',
+            'away': 'home-away3'
+        }
+        try:
+            scraper = UnderstatScraper()
+            scraper.load_page()
+            scraper.click_element(id_directory[side])
+            raw_data = scraper.scrape_table()
+            return raw_data
+        finally:
+            scraper.close()
+
+    def scrape_side_to_csv(self, side):
+        raw_data = self.scrape_side(side)
+        file_path = f"../data/raw/{side}_table_raw.csv"
+        print(f"writing data to {file_path}")
+        raw_data.to_csv(file_path)
+        print("Finished")
+
+
 # class HomeAwayDataframe:
 #     def __init__(self)
