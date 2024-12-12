@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import pandas as pd
 
+
 class UnderstatScraper:
     def __init__(self, url="https://understat.com/league/EPL"):
         """
@@ -87,7 +88,38 @@ class UnderstatScraper:
                 print("div not found")
         except Exception as e:
             print(f"Error scraping table: {e}")
+
+    def retrieve_raw_data(self, side):
+        """
+        This method takes in home or away side and runs the full UnderstatScraper
+        """
+        # validate input
+        valid_sides = {'home', 'away'}
+        if side not in valid_sides:
+            raise ValueError(f"Invalid value for 'side'. Expected one of {valid_sides}, received {side}")
+        print(f"Retrieving raw data from Understat.com EPL {side} table")
+
     def close(self):
         print("closing driver...")
         self.driver.quit()
         print("driver closed")
+
+class UnderstatScraperOrchestrator:
+    def __init__(self, league='EPL'):
+        """
+        This should eventually initialize with logic to determine the league in question and pass the correct url to
+        UnderstatScraper
+        """
+        self.league = league
+
+    def scrape_side(self, side):
+        """
+        This method takes in home or away side and runs the full UnderstatScraper
+        """
+        # validate input
+        valid_sides = {'home', 'away'}
+        if side not in valid_sides:
+            raise ValueError(f"Invalid value for 'side'. Expected one of {valid_sides}, received '{side}'")
+        print(f"Retrieving raw data from Understat.com EPL {side} table")
+# class HomeAwayDataframe:
+#     def __init__(self)
