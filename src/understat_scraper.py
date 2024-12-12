@@ -7,7 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import pandas as pd
 
-class WebScraper:
+
+class UnderstatScraper:
     def __init__(self, url="https://understat.com/league/EPL"):
         """
         Initialize the WebScraper with url
@@ -87,7 +88,73 @@ class WebScraper:
                 print("div not found")
         except Exception as e:
             print(f"Error scraping table: {e}")
+
+    def retrieve_raw_data(self, side):
+        """
+        This method takes in home or away side and runs the full UnderstatScraper
+        """
+        # validate input
+        valid_sides = {'home', 'away'}
+        if side not in valid_sides:
+            raise ValueError(f"Invalid value for 'side'. Expected one of {valid_sides}, received {side}")
+        print(f"Retrieving raw data from Understat.com EPL {side} table")
+
     def close(self):
         print("closing driver...")
         self.driver.quit()
         print("driver closed")
+
+class UnderstatScraperOrchestrator:
+    def __init__(self, league='EPL'):
+        """
+        This should eventually initialize with logic to determine the league in question and pass the correct url to
+        UnderstatScraper
+        """
+        self.league = league
+
+    def scrape_side(self, side):
+        """
+        This method takes in home or away side and runs the full UnderstatScraper
+        """
+        # validate input
+        valid_sides = {'home', 'away'}
+        if side not in valid_sides:
+            raise ValueError(f"Invalid value for 'side'. Expected one of {valid_sides}, received '{side}'")
+        print(f"Retrieving raw data from Understat.com EPL {side} table")
+
+        # directory to translate side into the correct id
+        id_directory = {
+            'home': 'home-away2',
+            'away': 'home-away3'
+        }
+
+        # run scraper
+        try:
+            scraper = UnderstatScraper()
+            scraper.load_page()
+            scraper.click_element(id_directory[side])
+            raw_data = scraper.scrape_table()
+            return raw_data
+        finally:
+            scraper.close()
+
+    def scrape_side_to_csv(self, side):
+        """
+        Runs scraper and writes it to a csv in ../data/raw
+        """
+        raw_data = self.scrape_side(side)
+        file_path = f"../data/raw/{side}_table_raw.csv"
+
+        print(f"writing data to {file_path}")
+
+        raw_data.to_csv(file_path, index=False)
+
+        print("Finished")
+
+    def scrape_all_to_csv(self):
+        """
+        Scrape both home and away to their respective raw csv files. Most analysis in this project will require
+        this. It's in one method here for convenience.
+        """
+        self.scrape_side_to_csv(side='home')
+        self.scrape_side_to_csv(side='away')
