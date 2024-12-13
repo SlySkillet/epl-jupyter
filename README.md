@@ -87,7 +87,22 @@ Processes raw match data to calculate metrics needed for probability analysis.
 
 ---
 
-### Notebook 3: `03_analysis_template.ipynb`
+### Notebook 3: `03_retrieve_odds.ipynb`
+#### Purpose:
+Fetch the current odds (from MyBookie) for a specified match day. This is optional, but recommended for getting a picture of how the models analysis compares with the odds that MyBookie is offering
+
+#### Instructions:
+1. Open `03_retrieve_odds.ipynb`
+2. Specify the matchday of the desired match ("yyyy-mm-dd") where indicated in the first code cell
+3. Run all cells (`Run All` or press `Shift + Enter`).
+3. Verify processed data is saved to:
+   - `data/processed/odds/odds_matchday_< date_entered >.csv`
+4. Proceed to `04_analysis_template.ipynb`.
+
+Instructions with more detail available in the notebook.
+---
+
+### Notebook 4: `04_analysis_template.ipynb`
 #### Purpose:
 Performs probability calculations for a specific match and generates insights.
 
