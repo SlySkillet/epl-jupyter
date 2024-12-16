@@ -92,6 +92,7 @@ Processes raw match data to calculate metrics needed for probability analysis.
 Fetch the current odds (from MyBookie) for a specified match day. This is optional, but recommended for getting a picture of how the models analysis compares with the odds that MyBookie is offering
 
 #### Instructions:
+*Additional instructions available in the notebook*
 1. Open `03_retrieve_odds.ipynb`
 2. Specify the matchday of the desired match ("yyyy-mm-dd") where indicated in the first code cell
 3. Run all cells (`Run All` or press `Shift + Enter`).
@@ -99,7 +100,6 @@ Fetch the current odds (from MyBookie) for a specified match day. This is option
    - `data/processed/odds/odds_matchday_< date_entered >.csv`
 4. Proceed to `04_analysis_template.ipynb`.
 
-Instructions with more detail available in the notebook.
 ---
 
 ### Notebook 4: `04_analysis_template.ipynb`
