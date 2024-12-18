@@ -1,13 +1,21 @@
 import pandas as pd
 
 class ProcessData:
-    def __init__(self, home_table_raw_path=None, away_table_raw_path=None):
+    def __init__(
+        self,
+        home_table_raw_path='../data/raw/home_table_raw.csv',
+        away_table_raw_path='../data/raw/away_table_raw.csv'
+    ):
         """
         Initializes the ProcessData object by preparing home and away data tables for analysis
 
         Args:
             home_table_raw_path (str, optional): File path to the raw CSV containing home team data.
             away_table_raw_path (str, optional): File path to the raw CSV containing away team data.
+
+        NOTE: Currently paths default to relative path to data directory from notebooks directory (where
+        I expect to always be running this function). This should be updated for scalability with a
+        'get_project_root' method.
 
         """
         self.home_table_raw_path = home_table_raw_path
@@ -60,13 +68,13 @@ class ProcessData:
         input_df["gpm_conceded"] = input_df["GA"] / input_df["M"]
 
 
-    def save_to_csv(self, directory_path):
+    def save_to_csv(self, directory_path='../data/processed/'):
         """
         Saves to csv at the specified path
         Args:
-            directory_path (str): path to save file
+            directory_path (str): path to save file. Default '../data/processed/'
         """
         path = directory_path if directory_path[-1] == '/' else directory_path + '/'
 
-        self.home_df.to_csv(f"{path}home_table.csv")
-        self.away_df.to_csv(f"{path}away_table.csv")
+        self.home_df.to_csv(f"{path}home_table_test.csv")
+        self.away_df.to_csv(f"{path}away_table_test.csv")
