@@ -60,4 +60,13 @@ class ProcessData:
         input_df["gpm_conceded"] = input_df["GA"] / input_df["M"]
 
 
-    # def save_to_csv(self, processed_directory_path=None):
+    def save_to_csv(self, directory_path):
+        """
+        Saves to csv at the specified path
+        Args:
+            directory_path (str): path to save file
+        """
+        path = directory_path if directory_path[-1] == '/' else directory_path + '/'
+
+        self.home_df.to_csv(f"{path}home_table.csv")
+        self.away_df.to_csv(f"{path}away_table.csv")
