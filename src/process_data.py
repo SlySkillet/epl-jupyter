@@ -82,5 +82,5 @@ class ProcessData:
         """
         path = directory_path if directory_path[-1] == '/' else directory_path + '/'
 
-        self.home_df.to_csv(f"{path}home_table_test.csv", index=False)
-        self.away_df.to_csv(f"{path}away_table_test.csv", index=False)
+        self.home_df.to_csv(f"{path}home_table.csv", index=False)
+        self.away_df.to_csv(f"{path}away_table.csv", index=False)
