@@ -40,6 +40,16 @@ class ProcessData:
         Args:
             file_path (str): File path to raw csv
         """
+        # check file path
+        if not file_path.endswith('.csv'):
+            raise ValueError(f"Expected a CSV file, but got: {file_path}")
+
+        try:
+            # read csv and save to dataframe
+            df = pd.read_csv(file_path)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"The file at {file_path} was not found. Check file path.")
+
         columns_to_drop = [
             'W',
             'D',
@@ -50,12 +60,8 @@ class ProcessData:
             'xPTS',
         ]
 
-        # read csv and save to dataframe
-        df = pd.read_csv(file_path)
-
         # drop unneeded columns
         df_clean = df.drop(columns=columns_to_drop)
-
         return df_clean
 
     def _calculate_gpm(self, input_df):
