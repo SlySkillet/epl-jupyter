@@ -9,6 +9,7 @@ Chelsea - CHE
 Crystal Palace - CRY
 Everton - EVE
 Fulham - FUL
+Ipswich Town - IPS
 Liverpool - LIV
 Luton Town - LUT
 Manchester City - MCI
