@@ -8,6 +8,8 @@ class OddsFetcher:
         self.api_key = api_key
         self.base_url = base_url
 
+        self.api_usage = None
+
     def fetch_odds(self, matchday, bookmakers="mybookieag", regions="us", markets="h2h,totals"):
         params = {
             "apiKey": self.api_key,
@@ -21,9 +23,18 @@ class OddsFetcher:
         }
 
         response = requests.get(self.base_url, params=params)
+
         if response.status_code == 200:
-            data = response.json()
+            # save api_usage to OddsFetcher object for reference
+            requests_used = response.headers['X-Requests-Used']
+            requests_remaining = response.headers['X-Requests-Remaining']
+            self.api_usage = {
+                'requests_used': requests_used,
+                'requests_remaining': requests_remaining
+            }
+
             print(f"successfully retrieved {bookmakers} odds for {matchday}")
+            data = response.json()
             return data
         else:
             print(f"Error: {response.status_code}, {response.text}")
