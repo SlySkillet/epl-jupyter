@@ -17,6 +17,7 @@ Manchester United - MUN
 Newcastle United - NEW
 Nottingham Forest - NFO
 Sheffield United - SHU
+Southampton - SOU
 Tottenham Hotspur - TOT
 West Ham United - WHU
 Wolverhampton Wanderers - WOL
